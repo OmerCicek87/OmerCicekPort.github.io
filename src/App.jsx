@@ -1,20 +1,27 @@
-import Navbar from "./components/Navbar/Navbar";
+import React, { useRef } from "react";
+import Navbar from "./components/MainWebsite/Navbar/Navbar";
 import Home from "./pages/Home/Home";
-import Contact from "./pages/Contact/Contact";
-import About from "./pages/About/About";
-import Footer from "./components/Footer/Footer";
-
+import Footer from "./components/MainWebsite/Footer/Footer";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import "./index.css";
 
-import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-
 function App() {
+  const aboutRef = useRef(null);
+  const blogRef = useRef(null);
+  const projectRef = useRef(null);
+  const contactRef = useRef(null);
+
   const Layout = () => {
     return (
       <div className="app flex flex-col gap-y-10 bg-black">
-        <Navbar />
+        <Navbar
+          aboutRef={aboutRef}
+          blogRef={blogRef}
+          contactRef={contactRef}
+          projectRef={projectRef}
+        />
         <div className="flex-1">
-        <Outlet />
+          <Outlet context={{ aboutRef, blogRef, projectRef, contactRef }} />
         </div>
         <Footer />
       </div>
@@ -24,21 +31,20 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout />,
+      element: (
+        <Layout
+          aboutRef={aboutRef}
+          blogRef={blogRef}
+          projectRef={projectRef}
+          contactRef={contactRef}
+        />
+      ),
       children: [
         {
-          path: "/",
-          element: <Home />
+          path: "/home",
+          element: <Home />,
         },
-        {
-          path: "/about",
-          element: <About />
-        },
-        {
-          path: "/contact",
-          element: <Contact />
-        },
-      ]
+      ],
     },
   ]);
 
